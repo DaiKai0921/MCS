@@ -30,11 +30,16 @@ def post_to_mcs(payload):
 while True:
 	h0, t0= Adafruit_DHT.read_retry(Adafruit_DHT.DHT11, GPIO_PIN)
 	SwitchStatus = GPIO.input(24)
-	if(SwitchStatus == 0):
+	if(SwitchStatus == 1):
 		print('Button pressed')
+		print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(t0, h0))
 	else:
 		print('Button released')
-	payload = {"datapoints":[{"dataChnId":"Hum","values":{"value":h0}}
-		,{"dataChnId":"Temp","values":{"value":t0}}
+		print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(t0, h0))
+
+	payload = {"datapoints":[{"dataChnId":"Humidity","values":{"value":h0}}
+		,{"dataChnId":"Temperature","values":{"value":t0}}	
 		,{"dataChnId":"SwitchStatus","values":{"value":SwitchStatus}}]}
+	
 	post_to_mcs(payload)
+	time.sleep(1)
